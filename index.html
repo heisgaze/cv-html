@@ -75,6 +75,58 @@
       border-radius: 5px;
       font-size: 14px;
     }
+
+    /* tabs */
+    .tabs-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* 1. Styling untuk navigasi tab */
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+        .tab-button {
+            padding: 15px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-size: 16px;
+            border-right: 1px solid #ccc;
+        }
+        .tab-button:last-child {
+            border-right: none;
+        }
+        .tab-button:hover {
+            background-color: #ddd;
+        }
+        /* Style untuk tab yang sedang aktif */
+        .tab-button.active {
+            background-color: #fff;
+            border-bottom: 2px solid #007bff;
+            font-weight: bold;
+        }
+        /* 2. Styling untuk panel konten */
+        .tab-content {
+            padding: 20px;
+            /* Secara default, semua panel konten disembunyikan */
+            display: none;
+        }
+        /* Style untuk panel konten yang sedang aktif */
+        .tab-content.active {
+            display: block;
+        }
+
+        .gambar {
+          text-align: center;
+        }
+        .gambar img {
+          max-width: 200px;
+        }
   </style>
 </head>
 <body>
@@ -161,5 +213,58 @@
       </div>
     </div>
   </div>
+  <div class="tabs-container">
+    <div class="tab-buttons">
+            <button class="tab-button active" data-for-tab="1">Tab 1</button>
+            <button class="tab-button" data-for-tab="2">Tab 2</button>
+            <button class="tab-button" data-for-tab="3">Tab 3</button>
+        </div>
+
+        <!-- Wadah untuk konten-konten tab -->
+        <div class="tabs-content">
+            <div class="tab-content active" data-tab="1">
+              <div class="gambar">
+                <img src="assets/Logo-Vertikal-Telkom-University.png" alt="">
+              </div>
+                <h2>Konten untuk Tab 1</h2>
+                <p>Ini adalah isi dari tab pertama.</p>
+            </div>
+            <div class="tab-content" data-tab="2">
+                <h2>Konten untuk Tab 2</h2>
+                <p>Ini adalah isi dari tab kedua. .</p>
+            </div>
+            <div class="tab-content" data-tab="3">
+                <h2>Konten untuk Tab 3</h2>
+                <p>Ini adalah isi dari tab ketiga.</p>
+            </div>
+        </div>
+  </div>
+  <script>
+        // Menggunakan event delegation untuk efisiensi
+        const tabsContainer = document.querySelector('.tabs-container');
+        const tabButtonsContainer = tabsContainer.querySelector('.tab-buttons');
+        const tabsContentContainer = tabsContainer.querySelector('.tabs-content');
+
+        tabButtonsContainer.addEventListener('click', e => {
+            // 1. Pastikan yang di-klik adalah tombol tab
+            const clickedButton = e.target.closest('.tab-button');
+            if (!clickedButton) return;
+
+            // 2. Hapus kelas 'active' dari semua tombol dan konten
+            tabButtonsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            tabsContentContainer.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // 3. Tambahkan kelas 'active' ke tombol yang di-klik
+            clickedButton.classList.add('active');
+
+            // 4. Tampilkan konten yang sesuai
+            const tabNumber = clickedButton.dataset.forTab;
+            const contentToShow = tabsContentContainer.querySelector(`.tab-content[data-tab="${tabNumber}"]`);
+            
+            if (contentToShow) {
+                contentToShow.classList.add('active');
+            }
+        });
+    </script>
 </body>
 </html>
